@@ -16,7 +16,7 @@ async function connect(){
 }
 connect();
 
-const server = http.createServer((req,res) =>{
+const server = http.createServer(async(req,res) =>{
     let db = client.db('product-db');
     let collection = db.collection("product");
 
@@ -28,15 +28,24 @@ const server = http.createServer((req,res) =>{
 
     if(parsed_url.pathname === '/'){
         res.writeHead(200,{'Content-Type' : 'text/html'});
-        res.end(fs.readFileSync('../client/product-details.html'))
+        res.end(fs.readFileSync('../client/index.html'))
     }else if(parsed_url.pathname === '/script.js'){
         res.writeHead(200,{'Content-Type' : 'text/javascript'});
         res.end(fs.readFileSync('../client/script.js'));
 
     }
+    else  if(parsed_url.pathname === '/product-details.html'){
+        res.writeHead(200,{'Content-Type' : 'text/html'})
+        res.end(fs.readFileSync('../client/product-details.html'))
+    }
+    
     else if(parsed_url.pathname === '/product-style.css'){
         res.writeHead(200,{'Content-Type' : "text/css"});
         res.end(fs.readFileSync("../client/product-style.css"));
+    }
+    else if(parsed_url.pathname === '/product-view.html'){
+        res.writeHead(200,{'Content-Type' : 'text/html'});
+        res.end(fs.readFileSync('../client/product-view.html'))
     }
     else if(parsed_url.pathname === '/submit' && req.method === 'POST'){
         console.log('reached reached')
@@ -94,6 +103,17 @@ const server = http.createServer((req,res) =>{
             })
         })
     }
+    else if(parsed_url.pathname === '/submit' && req.method === 'GET'){
+        let user_data = await collection.find().toArray();
+        console.log("user_data",user_data);
+        let json_datas = JSON.stringify(user_data);
+        console.log("json_data : " ,json_datas);
+
+        res.writeHead(200,{'Content-Type' : "text/json"});
+        res.end("json_datas")
+
+    }
+    
 })
 server.listen(PORT,()=>{
     console.log(`server is running at http://localhost:${PORT}`);
