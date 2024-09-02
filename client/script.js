@@ -11,6 +11,7 @@ async function adduser(event){
     let imageurl = document.getElementById('imageurl').value;
     let rate = document.getElementById('rate').value;
     let count = document.getElementById('count').value;
+   
 
     console.log('id',id)
     console.log('title',title)
@@ -48,3 +49,24 @@ async function adduser(event){
 
 
 }
+ async function viewdata(){
+    
+    let datacontainer = document.getElementById('datacontainer');
+    
+    try {
+        response = await fetch('/submit',{
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : json_data,
+            
+        });
+        console.log("response",response);
+        
+    } catch (error) {
+    
+    }
+  
+}
+
