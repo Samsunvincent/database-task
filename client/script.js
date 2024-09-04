@@ -49,24 +49,37 @@ async function adduser(event){
 
 
 }
+
  async function viewdata(){
-    
-    let datacontainer = document.getElementById('datacontainer');
-    
     try {
-        response = await fetch('/submit',{
-            method : "GET",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : json_data,
-            
-        });
-        console.log("response",response);
+        let datas = await fetch('/submit')
+        console.log("fetched",datas)
+
+        let parsed_datas =await datas.json();
+        console.log("parsed_datas",parsed_datas);
+
+        let datacontainer = document.getElementById('datacontainer')
+        let rows = ''
+
+        for(i=0;i<parsed_datas.length;i++){
+            rows = rows+`
+             <div class="container mt-5 shadow p-3 mb-5 bg-body rounded lh-lg">
+        <div id = "imageid" ><img onclick="handleClick(${parsed_datas[i].id})" src ="${parsed_datas[i].imageurl} "class = "datacontainerimg"></div>
+        <div id = "titleid">${parsed_datas[i].title}</div>
+        <div id = "descriptionid">${parsed_datas[i].description.slice(0,15)+"..."}</div>
+        <div id = "categoryid">${parsed_datas[i].category}</div>
+         <div id = "priceid">${parsed_datas[i].price}</div>
+        <div id = "ratingid">Rating : ${parsed_datas[i].ratingrate}</div>
         
+       </div>
+
+            `
+        }
+        datacontainer.innerHTML = rows;
     } catch (error) {
-    
+        console.log("error",error)
     }
-  
 }
+
+
 

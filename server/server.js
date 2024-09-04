@@ -44,9 +44,11 @@ const server = http.createServer(async(req,res) =>{
         res.end(fs.readFileSync("../client/product-style.css"));
     }
     else if(parsed_url.pathname === '/product-view.html'){
-        res.writeHead(200,{'Content-Type' : 'text/html'});
-        res.end(fs.readFileSync('../client/product-view.html'))
+        res.writeHead(200,{'Content-Type':"text/html"});
+        res.end(fs.readFileSync("../client/product-view.html"));
+        
     }
+ 
     else if(parsed_url.pathname === '/submit' && req.method === 'POST'){
         console.log('reached reached')
 
@@ -110,15 +112,10 @@ const server = http.createServer(async(req,res) =>{
         console.log("json_data : " ,json_datas);
 
         res.writeHead(200,{'Content-Type' : "text/json"});
-        res.end("json_datas")
+        res.end(json_datas);
 
     }
-    
 })
 server.listen(PORT,()=>{
     console.log(`server is running at http://localhost:${PORT}`);
-    
-   
-
-    
 })
